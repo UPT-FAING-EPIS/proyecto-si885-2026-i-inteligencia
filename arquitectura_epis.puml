@@ -1,0 +1,268 @@
+@startuml
+title Arquitectura conceptual - EPIS Analytics con FastAPI + Angular y login real
+
+skinparam classAttributeIconSize 0
+skinparam shadowing false
+skinparam packageStyle rectangle
+
+package "Angular Frontend" {
+  class LoginComponent {
+    -estudiantes: string[]
+    -username: string
+    -password: string
+    -errorMessage: string
+    +ngOnInit(): void
+    +submitLogin(): void
+  }
+
+  class PerfilDashboardComponent {
+    -session: SessionModel
+    -redSocial: string
+    -metricas: PerfilMetricasModel
+    -interaccionesTiempo: ChartData[]
+    -interaccionesPorRed: ChartData[]
+    +ngOnInit(): void
+    +loadPerfil(): void
+    +onRedChange(redSocial: string): void
+  }
+
+  class GlobalDashboardComponent {
+    -redSocial: string
+    -alcancePorCiclo: ChartData[]
+    -interaccionesPorRed: ChartData[]
+    -topEngagement: TopEngagementModel[]
+    +ngOnInit(): void
+    +loadGlobal(): void
+    +onRedChange(redSocial: string): void
+  }
+
+  class AuthClientService {
+    -baseUrl: string
+    +login(username: string, password: string): Observable<SessionModel>
+    +logout(): void
+    +getSession(): SessionModel
+    +isAuthenticated(): bool
+    +getAccessToken(): string
+  }
+
+  class AuthInterceptor {
+    +intercept(request: HttpRequest): HttpRequest
+  }
+
+  class AuthGuard {
+    +canActivate(): bool
+  }
+
+  class DashboardClientService {
+    -baseUrl: string
+    +getEstudiantes(): Observable<string[]>
+    +getPerfil(estudiante: string, redSocial: string): Observable<PerfilResponse>
+    +getGlobal(redSocial: string): Observable<GlobalResponse>
+  }
+
+  class SessionModel {
+    +estudiante: string
+    +displayName: string
+    +username: string
+    +accessToken: string
+    +tokenType: string
+    +isAuthenticated: bool
+  }
+}
+
+package "FastAPI API" {
+  class AuthApiController {
+    -auth_service: AuthService
+    +login(request: LoginRequest): SessionResponse
+    +me(token: str): dict
+    +logout(): dict
+  }
+
+  class DashboardApiController {
+    -analytics_service: AnalyticsService
+    -repository: PublicacionRepository
+    -auth_service: AuthService
+    +get_estudiantes(): list
+    +get_perfil(estudiante: str, red_social: str, token: str): PerfilResponse
+    +get_global(red_social: str, token: str): GlobalResponse
+  }
+
+  class AppBootstrap {
+    -data_service: GeneradorDatosService
+    -auth_service: AuthService
+    +startup(): None
+  }
+
+  class LoginRequest {
+    +username: str
+    +password: str
+  }
+
+  class SessionResponse {
+    +estudiante: str
+    +display_name: str
+    +username: str
+    +access_token: str
+    +token_type: str
+    +is_authenticated: bool
+  }
+
+  class PerfilResponse {
+    +metricas: dict
+    +interacciones_tiempo: list
+    +interacciones_por_red: list
+  }
+
+  class GlobalResponse {
+    +alcance_por_ciclo: list
+    +interacciones_por_red: list
+    +top_engagement: list
+  }
+}
+
+package "Model" {
+  class Publicacion {
+    +id: int
+    +estudiante: str
+    +ciclo: str
+    +red_social: str
+    +formato: str
+    +fecha: date
+    +alcance: int
+    +interacciones: int
+    +engagement_rate: float
+  }
+
+  class FiltrosDashboard {
+    +estudiante: str
+    +fecha_inicio: date
+    +fecha_fin: date
+    +ciclo: str
+    +red_social: str
+  }
+
+  class Usuario {
+    +id: int
+    +estudiante: str
+    +username: str
+    +password_hash: str
+    +rol: str
+  }
+}
+
+package "Repository" {
+  interface PublicacionRepository {
+    +exists_database(): bool
+    +initialize_database(): None
+    +save_many(publicaciones: DataFrame): None
+    +clear_all(): None
+    +find_all(): DataFrame
+    +find_by_estudiante(estudiante: str): DataFrame
+    +get_estudiantes(): list
+  }
+
+  class SQLitePublicacionRepository {
+    -_instance: SQLitePublicacionRepository
+    -db_path: str
+    -table_name: str
+    -__init__(db_path: str)
+    +get_instance(db_path: str): SQLitePublicacionRepository
+    +exists_database(): bool
+    +initialize_database(): None
+    +save_many(publicaciones: DataFrame): None
+    +clear_all(): None
+    +find_all(): DataFrame
+    +find_by_estudiante(estudiante: str): DataFrame
+    +get_estudiantes(): list
+  }
+
+  interface UsuarioRepository {
+    +initialize_database(): None
+    +count_users(): int
+    +save_many(usuarios: list): None
+    +find_by_username(username: str): Usuario
+    +get_usernames(): list
+  }
+
+  class SQLiteUsuarioRepository {
+    -_instances: dict
+    -db_path: str
+    -table_name: str
+    -__init__(db_path: str)
+    +get_instance(db_path: str): SQLiteUsuarioRepository
+    +initialize_database(): None
+    +count_users(): int
+    +save_many(usuarios: list): None
+    +find_by_username(username: str): Usuario
+    +get_usernames(): list
+  }
+}
+
+package "Service / Use Cases" {
+  class GeneradorDatosService {
+    -repository: PublicacionRepository
+    -num_registros: int
+    -faker: Faker
+    +ensure_seed_data(): None
+    +generate_publicaciones(): DataFrame
+    -generate_fecha_con_picos(): date
+    -calculate_metricas(formato: str): tuple
+  }
+
+  class AnalyticsService {
+    -repository: PublicacionRepository
+    +get_metricas_estudiante(estudiante: str, red_social: str): dict
+    +get_interacciones_tiempo(estudiante: str, red_social: str): DataFrame
+    +get_interacciones_por_red(estudiante: str, red_social: str): DataFrame
+    +get_alcance_por_ciclo(red_social: str): DataFrame
+    +get_top_engagement(limit: int, red_social: str): DataFrame
+  }
+
+  class AuthService {
+    -publicacion_repository: PublicacionRepository
+    -usuario_repository: UsuarioRepository
+    -token_secret: bytes
+    +ensure_demo_users(): None
+    +login(username: str, password: str): SessionResponse
+    +verify_token(token: str): dict
+    +create_token(usuario: Usuario): str
+    +hash_password(password: str): str
+    +verify_password(password: str, password_hash: str): bool
+  }
+}
+
+LoginComponent --> AuthClientService
+LoginComponent --> DashboardClientService
+PerfilDashboardComponent --> AuthClientService
+PerfilDashboardComponent --> DashboardClientService
+GlobalDashboardComponent --> DashboardClientService
+AuthGuard --> AuthClientService
+AuthInterceptor --> AuthClientService
+AuthClientService ..> AuthApiController : HTTP/REST
+DashboardClientService ..> DashboardApiController : HTTP/REST + Bearer token
+AuthClientService --> SessionModel
+PerfilDashboardComponent --> SessionModel
+
+AuthApiController --> AuthService
+DashboardApiController --> AnalyticsService
+DashboardApiController --> PublicacionRepository
+DashboardApiController --> AuthService : valida token
+AppBootstrap --> GeneradorDatosService
+AppBootstrap --> AuthService : crea usuarios demo
+
+SQLitePublicacionRepository ..|> PublicacionRepository
+SQLiteUsuarioRepository ..|> UsuarioRepository
+GeneradorDatosService --> PublicacionRepository
+AnalyticsService --> PublicacionRepository
+AuthService --> PublicacionRepository
+AuthService --> UsuarioRepository
+
+PublicacionRepository ..> Publicacion
+UsuarioRepository ..> Usuario
+AnalyticsService ..> FiltrosDashboard
+DashboardApiController ..> PerfilResponse
+DashboardApiController ..> GlobalResponse
+AuthApiController ..> LoginRequest
+AuthApiController ..> SessionResponse
+
+@enduml

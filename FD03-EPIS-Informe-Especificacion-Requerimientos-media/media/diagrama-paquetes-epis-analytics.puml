@@ -1,0 +1,114 @@
+@startuml
+title Diagrama de Paquetes - EPIS Analytics
+
+left to right direction
+skinparam packageStyle rectangle
+skinparam shadowing false
+skinparam ArrowColor #334155
+skinparam ArrowThickness 1.8
+skinparam package {
+  BackgroundColor #F8FAFC
+  BorderColor #CBD5E1
+  FontColor #0F172A
+  FontStyle bold
+}
+skinparam component {
+  BackgroundColor #FFFFFF
+  BorderColor #94A3B8
+  FontColor #0F172A
+}
+skinparam database {
+  BackgroundColor #FFF7ED
+  BorderColor #F97316
+  FontColor #0F172A
+}
+
+package "Angular Frontend\nepis-web/src/app" as FE #ECFEFF {
+  package "features" as FEAT {
+    component "LoginComponent" as C_Login
+    component "PerfilDashboardComponent" as C_Perfil
+    component "GlobalDashboardComponent" as C_Global
+  }
+
+  package "core" as CORE {
+    component "AuthClientService" as C_AuthClient
+    component "DashboardClientService" as C_DashboardClient
+    component "AuthGuard" as C_Guard
+    component "AuthInterceptor" as C_Interceptor
+  }
+}
+
+package "FastAPI API\napi" as API #EFF6FF {
+  component "auth_routes.py" as A_AuthRoutes
+  component "dashboard_routes.py" as A_DashboardRoutes
+  component "dependencies.py" as A_Dependencies
+  component "schemas.py" as A_Schemas
+  component "main.py" as A_Main
+}
+
+package "Services\nservices" as SVC #DCFCE7 {
+  component "AuthService" as S_Auth
+  component "AnalyticsService" as S_Analytics
+  component "GeneradorDatosService" as S_Generador
+}
+
+package "Repositories\nrepositories" as REPO #FEF3C7 {
+  component "UsuarioRepository" as R_Usuario
+  component "SQLiteUsuarioRepository" as R_SQLUsuario
+  component "PublicacionRepository" as R_Publicacion
+  component "SQLitePublicacionRepository" as R_SQLPublicacion
+}
+
+package "Models\nmodels" as MOD #F5F3FF {
+  component "Usuario" as M_Usuario
+  component "Publicacion" as M_Publicacion
+  component "FiltrosDashboard" as M_Filtros
+  component "Catalogos" as M_Catalogos
+}
+
+database "SQLite\nepis_data.db" as DB
+
+package "Infraestructura\ninfra/terraform" as INFRA #FFF7ED {
+  component "main.tf" as T_Main
+  component "variables.tf" as T_Vars
+  component "outputs.tf" as T_Out
+  component "Infracost" as T_Cost
+}
+
+C_Login --> C_AuthClient : autentica
+C_Perfil --> C_DashboardClient : solicita metricas
+C_Global --> C_DashboardClient : solicita agregados
+C_Guard --> C_AuthClient : verifica sesion
+C_Interceptor --> C_AuthClient : obtiene token
+
+C_AuthClient --> A_AuthRoutes : POST /api/auth/login
+C_DashboardClient --> A_DashboardRoutes : GET /api/estudiantes\nGET /api/dashboard/*
+
+A_Main --> A_AuthRoutes
+A_Main --> A_DashboardRoutes
+A_AuthRoutes --> S_Auth
+A_DashboardRoutes --> S_Auth : valida token
+A_DashboardRoutes --> S_Analytics : consulta indicadores
+A_Dependencies --> S_Auth
+A_Dependencies --> S_Analytics
+
+S_Auth --> R_SQLUsuario
+S_Auth --> R_SQLPublicacion
+S_Analytics --> R_SQLPublicacion
+S_Generador --> R_SQLPublicacion
+S_Generador --> R_SQLUsuario
+
+R_SQLUsuario ..|> R_Usuario
+R_SQLPublicacion ..|> R_Publicacion
+R_SQLUsuario --> DB
+R_SQLPublicacion --> DB
+
+R_SQLUsuario --> M_Usuario
+R_SQLPublicacion --> M_Publicacion
+S_Analytics --> M_Filtros
+S_Generador --> M_Catalogos
+
+INFRA ..> API : despliegue propuesto\nbackend
+INFRA ..> FE : hosting estatico\nfrontend
+T_Cost ..> T_Main : estima costos
+@enduml

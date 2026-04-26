@@ -1,0 +1,158 @@
+@startuml
+title Diagrama de Clases Conceptual - EPIS Analytics
+
+skinparam shadowing false
+skinparam classAttributeIconSize 0
+skinparam linetype ortho
+skinparam ArrowColor #334155
+skinparam ArrowThickness 1.6
+skinparam class {
+  BackgroundColor #FFFFFF
+  BorderColor #94A3B8
+  FontColor #0F172A
+}
+skinparam interface {
+  BackgroundColor #EFF6FF
+  BorderColor #2563EB
+  FontColor #0F172A
+}
+skinparam package {
+  BackgroundColor #F8FAFC
+  BorderColor #CBD5E1
+  FontColor #0F172A
+  FontStyle bold
+}
+
+package "Dominio" {
+  class Usuario {
+    +id: int | None
+    +estudiante: str
+    +username: str
+    +password_hash: str
+    +rol: str
+  }
+
+  class Publicacion {
+    +id: int | None
+    +estudiante: str
+    +ciclo: str
+    +red_social: str
+    +formato: str
+    +fecha: date
+    +alcance: int
+    +interacciones: int
+    +engagement_rate: float
+  }
+
+  class FiltrosDashboard {
+    +estudiante: str | None
+    +fecha_inicio: date | None
+    +fecha_fin: date | None
+    +ciclo: str | None
+    +red_social: str | None
+  }
+}
+
+package "Servicios" {
+  class AuthService {
+    +DEFAULT_PASSWORD: str
+    +TOKEN_TTL_SECONDS: int
+    -publicacion_repository: PublicacionRepository
+    -usuario_repository: UsuarioRepository
+    -token_secret: bytes
+    +ensure_demo_users(): void
+    +login(username: str, password: str): dict
+    +verify_token(token: str): dict
+    +create_token(usuario: Usuario): str
+    +hash_password(password: str): str
+    +verify_password(password: str, stored_hash: str): bool
+  }
+
+  class AnalyticsService {
+    +CICLO_ORDER: list
+    -repository: PublicacionRepository
+    +get_metricas_estudiante(estudiante: str, red_social: str | None): dict
+    +get_interacciones_tiempo(estudiante: str, red_social: str | None): DataFrame
+    +get_interacciones_por_red(estudiante: str | None, red_social: str | None): DataFrame
+    +get_alcance_por_ciclo(red_social: str | None): DataFrame
+    +get_top_engagement(limit: int, red_social: str | None): DataFrame
+  }
+
+  class GeneradorDatosService {
+    +CICLOS: tuple
+    +REDES_SOCIALES: tuple
+    +FORMATOS: tuple
+    -repository: PublicacionRepository
+    -num_registros: int
+    -reference_date: date
+    +ensure_seed_data(): void
+    +generate_publicaciones(): DataFrame
+  }
+}
+
+package "Repositorios" {
+  interface PublicacionRepository {
+    +exists_database(): bool
+    +initialize_database(): void
+    +save_many(publicaciones: DataFrame): void
+    +clear_all(): void
+    +find_all(): DataFrame
+    +find_by_estudiante(estudiante: str): DataFrame
+    +get_estudiantes(): list[str]
+  }
+
+  class SQLitePublicacionRepository {
+    -db_path: Path
+    -table_name: str
+    +get_instance(db_path: str): SQLitePublicacionRepository
+    +exists_database(): bool
+    +initialize_database(): void
+    +save_many(publicaciones: DataFrame): void
+    +clear_all(): void
+    +find_all(): DataFrame
+    +find_by_estudiante(estudiante: str): DataFrame
+    +get_estudiantes(): list[str]
+  }
+
+  interface UsuarioRepository {
+    +initialize_database(): void
+    +count_users(): int
+    +save_many(usuarios: list[Usuario]): void
+    +find_by_username(username: str): Usuario | None
+    +get_usernames(): list[str]
+  }
+
+  class SQLiteUsuarioRepository {
+    -db_path: Path
+    -table_name: str
+    +get_instance(db_path: str): SQLiteUsuarioRepository
+    +initialize_database(): void
+    +count_users(): int
+    +save_many(usuarios: list[Usuario]): void
+    +find_by_username(username: str): Usuario | None
+    +get_usernames(): list[str]
+  }
+}
+
+class "SQLite\nusuarios / publicaciones" as SQLiteDB <<database>>
+
+SQLitePublicacionRepository ..|> PublicacionRepository
+SQLiteUsuarioRepository ..|> UsuarioRepository
+
+AuthService --> UsuarioRepository : autentica con
+AuthService --> PublicacionRepository : crea usuarios demo desde
+AuthService ..> Usuario : genera token para
+
+AnalyticsService --> PublicacionRepository : consulta publicaciones
+AnalyticsService ..> FiltrosDashboard : aplica filtros
+AnalyticsService ..> Publicacion : calcula metricas desde
+
+GeneradorDatosService --> PublicacionRepository : siembra datos
+GeneradorDatosService ..> Publicacion : genera registros
+
+UsuarioRepository ..> Usuario : persiste/recupera
+PublicacionRepository ..> Publicacion : expone datos
+
+SQLitePublicacionRepository --> SQLiteDB : tabla publicaciones
+SQLiteUsuarioRepository --> SQLiteDB : tabla usuarios
+@enduml

@@ -1,0 +1,74 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1180" height="820" viewBox="0 0 1180 820" role="img" aria-labelledby="title desc">
+  <title id="title">Diagrama de actividades con objetos</title>
+  <desc id="desc">Flujo de actividades con objetos principales de EPIS Analytics.</desc>
+  <defs>
+    <marker id="arrow" markerWidth="12" markerHeight="12" refX="10" refY="6" orient="auto">
+      <path d="M2,2 L10,6 L2,10 Z" fill="#64748b"/>
+    </marker>
+    <style>
+      .bg { fill:#f8fafc; }
+      .title { fill:#0f172a; font:700 28px Arial,sans-serif; }
+      .start { fill:#0f172a; stroke:#0f172a; stroke-width:2; }
+      .end { fill:#ffffff; stroke:#0f172a; stroke-width:5; }
+      .end-dot { fill:#0f172a; }
+      .step { fill:#ffffff; stroke:#cbd5e1; stroke-width:2; rx:16; }
+      .obj { fill:#eff6ff; stroke:#2563eb; stroke-width:2; rx:12; }
+      .decision { fill:#eef2ff; stroke:#6366f1; stroke-width:2; }
+      .error { fill:#fff7ed; stroke:#f97316; stroke-width:2; rx:16; }
+      .line { stroke:#64748b; stroke-width:2.4; fill:none; marker-end:url(#arrow); }
+      .text { fill:#0f172a; font:700 16px Arial,sans-serif; }
+      .text-sm { fill:#334155; font:400 13px Arial,sans-serif; }
+      .label { fill:#334155; font:700 13px Arial,sans-serif; }
+    </style>
+  </defs>
+  <rect class="bg" width="1180" height="820" rx="22"/>
+  <text class="title" x="590" y="48" text-anchor="middle">Diagrama de Actividades con Objetos</text>
+
+  <circle class="start" cx="590" cy="94" r="17"/>
+  <path class="line" d="M590 111 L590 140"/>
+
+  <rect class="step" x="410" y="140" width="360" height="58"/>
+  <text class="text" x="590" y="165" text-anchor="middle">Usuario abre la aplicación</text>
+  <text class="text-sm" x="590" y="185" text-anchor="middle">Objeto: Angular App</text>
+
+  <path class="line" d="M590 198 L590 226"/>
+  <rect class="obj" x="410" y="226" width="360" height="58"/>
+  <text class="text" x="590" y="251" text-anchor="middle">LoginComponent carga estudiantes</text>
+  <text class="text-sm" x="590" y="271" text-anchor="middle">Objeto: lista de estudiantes</text>
+
+  <path class="line" d="M590 284 L590 312"/>
+  <rect class="step" x="410" y="312" width="360" height="58"/>
+  <text class="text" x="590" y="337" text-anchor="middle">Usuario ingresa credenciales</text>
+  <text class="text-sm" x="590" y="357" text-anchor="middle">Objeto: Usuario</text>
+
+  <path class="line" d="M590 370 L590 405"/>
+  <polygon class="decision" points="590,405 750,465 590,525 430,465"/>
+  <text class="text" x="590" y="461" text-anchor="middle">¿Credenciales válidas?</text>
+
+  <path class="line" d="M750 465 L870 465"/>
+  <text class="label" x="808" y="450" text-anchor="middle">No</text>
+  <rect class="error" x="870" y="430" width="240" height="70"/>
+  <text class="text" x="990" y="458" text-anchor="middle">Mostrar mensaje</text>
+  <text class="text-sm" x="990" y="480" text-anchor="middle">Objeto: error de autenticación</text>
+
+  <path class="line" d="M590 525 L590 562"/>
+  <text class="label" x="620" y="548" text-anchor="middle">Sí</text>
+  <rect class="obj" x="410" y="562" width="360" height="58"/>
+  <text class="text" x="590" y="587" text-anchor="middle">AuthService genera token</text>
+  <text class="text-sm" x="590" y="607" text-anchor="middle">Objeto: sesión</text>
+
+  <path class="line" d="M590 620 L590 648"/>
+  <rect class="obj" x="410" y="648" width="360" height="58"/>
+  <text class="text" x="590" y="673" text-anchor="middle">AnalyticsService calcula métricas</text>
+  <text class="text-sm" x="590" y="693" text-anchor="middle">Objetos: Publicacion y FiltrosDashboard</text>
+
+  <path class="line" d="M590 706 L590 734"/>
+  <rect class="obj" x="410" y="734" width="360" height="58"/>
+  <text class="text" x="590" y="759" text-anchor="middle">Angular renderiza gráficos</text>
+  <text class="text-sm" x="590" y="779" text-anchor="middle">Objeto: configuración ECharts</text>
+
+  <path class="line" d="M990 500 L990 805 L610 805"/>
+  <path class="line" d="M590 792 L590 805"/>
+  <circle class="end" cx="590" cy="805" r="17"/>
+  <circle class="end-dot" cx="590" cy="805" r="8"/>
+</svg>

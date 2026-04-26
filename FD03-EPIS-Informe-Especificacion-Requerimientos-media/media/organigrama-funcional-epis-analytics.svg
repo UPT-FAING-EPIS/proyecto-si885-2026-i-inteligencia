@@ -1,0 +1,87 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1180" height="640" viewBox="0 0 1180 640" role="img" aria-labelledby="title desc">
+  <title id="title">Organigrama funcional EPIS Analytics</title>
+  <desc id="desc">Representación funcional de coordinación EPIS, docentes, estudiantes y equipo técnico alrededor de EPIS Analytics.</desc>
+  <defs>
+    <style>
+      .bg { fill: #f8fafc; }
+      .title { fill: #0f172a; font: 700 28px Arial, sans-serif; }
+      .subtitle { fill: #475569; font: 400 15px Arial, sans-serif; }
+      .box-root { fill: #0f172a; stroke: #0f172a; stroke-width: 2; rx: 18; }
+      .box-system { fill: #2563eb; stroke: #1d4ed8; stroke-width: 2; rx: 18; }
+      .box-user { fill: #ecfeff; stroke: #06b6d4; stroke-width: 2; rx: 16; }
+      .box-student { fill: #dcfce7; stroke: #22c55e; stroke-width: 2; rx: 16; }
+      .box-tech { fill: #fff7ed; stroke: #f97316; stroke-width: 2; rx: 16; }
+      .box-module { fill: #ffffff; stroke: #cbd5e1; stroke-width: 1.8; rx: 12; }
+      .text-white { fill: #ffffff; font: 700 20px Arial, sans-serif; }
+      .text { fill: #0f172a; font: 700 16px Arial, sans-serif; }
+      .text-sm { fill: #334155; font: 400 13px Arial, sans-serif; }
+      .line { stroke: #94a3b8; stroke-width: 2.4; fill: none; }
+      .line-blue { stroke: #2563eb; stroke-width: 3; fill: none; }
+    </style>
+  </defs>
+
+  <rect class="bg" x="0" y="0" width="1180" height="640" rx="22"/>
+
+  <text class="title" x="590" y="48" text-anchor="middle">Organigrama Funcional para EPIS Analytics</text>
+  <text class="subtitle" x="590" y="74" text-anchor="middle">Relación entre coordinación académica, usuarios del dashboard y equipo técnico del sistema</text>
+
+  <rect class="box-root" x="380" y="108" width="420" height="76"/>
+  <text class="text-white" x="590" y="140" text-anchor="middle">Coordinación / Dirección EPIS</text>
+  <text class="text-sm" x="590" y="164" text-anchor="middle" fill="#e2e8f0">Responsable del contexto académico y uso institucional</text>
+
+  <path class="line" d="M590 184 L590 222"/>
+  <rect class="box-system" x="410" y="222" width="360" height="80"/>
+  <text class="text-white" x="590" y="254" text-anchor="middle">EPIS Analytics</text>
+  <text class="text-sm" x="590" y="278" text-anchor="middle" fill="#dbeafe">Dashboard personal, global, filtros y métricas</text>
+
+  <path class="line-blue" d="M590 302 L590 340"/>
+  <path class="line" d="M185 340 L995 340"/>
+  <path class="line" d="M185 340 L185 376"/>
+  <path class="line" d="M470 340 L470 376"/>
+  <path class="line" d="M755 340 L755 376"/>
+  <path class="line" d="M995 340 L995 376"/>
+
+  <rect class="box-user" x="55" y="376" width="260" height="96"/>
+  <text class="text" x="185" y="408" text-anchor="middle">Docentes / responsables</text>
+  <text class="text-sm" x="185" y="433" text-anchor="middle">Consultan dashboard global</text>
+  <text class="text-sm" x="185" y="455" text-anchor="middle">y tendencias agregadas</text>
+
+  <rect class="box-student" x="340" y="376" width="260" height="96"/>
+  <text class="text" x="470" y="408" text-anchor="middle">Estudiantes EPIS</text>
+  <text class="text-sm" x="470" y="433" text-anchor="middle">Consultan perfil personal</text>
+  <text class="text-sm" x="470" y="455" text-anchor="middle">y métricas por red social</text>
+
+  <rect class="box-tech" x="625" y="376" width="260" height="96"/>
+  <text class="text" x="755" y="408" text-anchor="middle">Equipo técnico</text>
+  <text class="text-sm" x="755" y="433" text-anchor="middle">Mantiene backend, frontend,</text>
+  <text class="text-sm" x="755" y="455" text-anchor="middle">datos, pruebas e infraestructura</text>
+
+  <rect class="box-user" x="910" y="376" width="170" height="96"/>
+  <text class="text" x="995" y="408" text-anchor="middle">Coordinación</text>
+  <text class="text-sm" x="995" y="433" text-anchor="middle">interpreta resultados</text>
+  <text class="text-sm" x="995" y="455" text-anchor="middle">para mejora continua</text>
+
+  <path class="line" d="M755 472 L755 512"/>
+  <path class="line" d="M470 512 L1040 512"/>
+  <path class="line" d="M470 512 L470 536"/>
+  <path class="line" d="M620 512 L620 536"/>
+  <path class="line" d="M770 512 L770 536"/>
+  <path class="line" d="M920 512 L920 536"/>
+  <path class="line" d="M1040 512 L1040 536"/>
+
+  <rect class="box-module" x="390" y="536" width="160" height="58"/>
+  <text class="text-sm" x="470" y="561" text-anchor="middle">Backend</text>
+  <text class="text-sm" x="470" y="581" text-anchor="middle">FastAPI</text>
+
+  <rect class="box-module" x="560" y="536" width="160" height="58"/>
+  <text class="text-sm" x="640" y="561" text-anchor="middle">Frontend</text>
+  <text class="text-sm" x="640" y="581" text-anchor="middle">Angular</text>
+
+  <rect class="box-module" x="730" y="536" width="160" height="58"/>
+  <text class="text-sm" x="810" y="561" text-anchor="middle">Base de datos</text>
+  <text class="text-sm" x="810" y="581" text-anchor="middle">SQLite</text>
+
+  <rect class="box-module" x="900" y="536" width="160" height="58"/>
+  <text class="text-sm" x="980" y="561" text-anchor="middle">Pruebas e</text>
+  <text class="text-sm" x="980" y="581" text-anchor="middle">infraestructura</text>
+</svg>

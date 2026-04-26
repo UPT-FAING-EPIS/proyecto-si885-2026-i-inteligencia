@@ -1,0 +1,57 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1040" height="768" viewBox="0 0 1040 768" role="img" aria-label="HU-03 - Filtro por red social en dashboard personal">
+  <defs>
+    <marker id="arrow" markerWidth="10" markerHeight="10" refX="9" refY="5" orient="auto"><path d="M1,1 L9,5 L1,9 Z" fill="#2563eb"/></marker>
+    <style>
+      .bg { fill:#f8fafc; } .title { fill:#0f172a; font:700 24px Arial,sans-serif; }
+      .pbox { fill:#ffffff; stroke:#cbd5e1; stroke-width:2; rx:12; } .actor { fill:#ecfeff; stroke:#06b6d4; stroke-width:2; rx:12; }
+      .db { fill:#fff7ed; stroke:#f97316; stroke-width:2; rx:12; } .lane { stroke:#cbd5e1; stroke-width:1.5; stroke-dasharray:7 7; }
+      .msg { stroke:#2563eb; stroke-width:2.1; fill:none; } .return { stroke:#64748b; stroke-width:2; fill:none; stroke-dasharray:6 5; }
+      .ptxt { fill:#0f172a; font:700 12px Arial,sans-serif; } .mtxt { fill:#1e293b; font:400 12px Arial,sans-serif; }
+    </style>
+  </defs>
+  <rect class="bg" width="1040" height="768" rx="18"/>
+  <text class="title" x="520.0" y="42" text-anchor="middle">HU-03 - Filtro por red social en dashboard personal</text>
+
+  <rect class="actor" x="60.0" y="76" width="124" height="46"/>
+  <text class="ptxt" x="122.0" y="104" text-anchor="middle">Estudiante</text>
+  <line class="lane" x1="122.0" y1="168" x2="122.0" y2="724"/>
+  <rect class="pbox" x="205.0" y="76" width="124" height="46"/>
+  <text class="ptxt" x="267.0" y="104" text-anchor="middle">PerfilDashboard</text>
+  <line class="lane" x1="267.0" y1="168" x2="267.0" y2="724"/>
+  <rect class="pbox" x="350.0" y="76" width="124" height="46"/>
+  <text class="ptxt" x="412.0" y="104" text-anchor="middle">DashboardClient</text>
+  <line class="lane" x1="412.0" y1="168" x2="412.0" y2="724"/>
+  <rect class="pbox" x="495.0" y="76" width="124" height="46"/>
+  <text class="ptxt" x="557.0" y="104" text-anchor="middle">DashboardAPI</text>
+  <line class="lane" x1="557.0" y1="168" x2="557.0" y2="724"/>
+  <rect class="pbox" x="640.0" y="76" width="124" height="46"/>
+  <text class="ptxt" x="702.0" y="104" text-anchor="middle">AnalyticsService</text>
+  <line class="lane" x1="702.0" y1="168" x2="702.0" y2="724"/>
+  <rect class="pbox" x="785.0" y="76" width="124" height="46"/>
+  <text class="ptxt" x="847.0" y="104" text-anchor="middle">Repository</text>
+  <line class="lane" x1="847.0" y1="168" x2="847.0" y2="724"/>
+  <line class="msg" x1="122.0" y1="168" x2="267.0" y2="168" marker-end="url(#arrow)"/>
+  <text class="mtxt" x="194.5" y="161" text-anchor="middle">Selecciona red social</text>
+  <line class="msg" x1="267.0" y1="212" x2="412.0" y2="212" marker-end="url(#arrow)"/>
+  <text class="mtxt" x="339.5" y="205" text-anchor="middle">getPerfil(estudiante, redSocial)</text>
+  <line class="msg" x1="412.0" y1="256" x2="557.0" y2="256" marker-end="url(#arrow)"/>
+  <text class="mtxt" x="484.5" y="249" text-anchor="middle">GET /api/dashboard/perfil?red_social=YouTube</text>
+  <path class="msg" d="M557.0 300 C591.0 300 591.0 322 557.0 322" marker-end="url(#arrow)"/>
+  <text class="mtxt" x="587.0" y="293" text-anchor="middle">Validar red social</text>
+  <line class="msg" x1="557.0" y1="344" x2="702.0" y2="344" marker-end="url(#arrow)"/>
+  <text class="mtxt" x="629.5" y="337" text-anchor="middle">get_metricas_estudiante con filtro</text>
+  <line class="msg" x1="702.0" y1="388" x2="847.0" y2="388" marker-end="url(#arrow)"/>
+  <text class="mtxt" x="774.5" y="381" text-anchor="middle">find_by_estudiante</text>
+  <line class="return" x1="847.0" y1="432" x2="702.0" y2="432" marker-end="url(#arrow)"/>
+  <text class="mtxt" x="774.5" y="425" text-anchor="middle">Publicaciones</text>
+  <path class="msg" d="M702.0 476 C736.0 476 736.0 498 702.0 498" marker-end="url(#arrow)"/>
+  <text class="mtxt" x="732.0" y="469" text-anchor="middle">Aplicar filtro por red social</text>
+  <line class="return" x1="702.0" y1="520" x2="557.0" y2="520" marker-end="url(#arrow)"/>
+  <text class="mtxt" x="629.5" y="513" text-anchor="middle">Metricas filtradas</text>
+  <line class="return" x1="557.0" y1="564" x2="412.0" y2="564" marker-end="url(#arrow)"/>
+  <text class="mtxt" x="484.5" y="557" text-anchor="middle">PerfilResponse</text>
+  <line class="return" x1="412.0" y1="608" x2="267.0" y2="608" marker-end="url(#arrow)"/>
+  <text class="mtxt" x="339.5" y="601" text-anchor="middle">Datos actualizados</text>
+  <line class="return" x1="267.0" y1="652" x2="122.0" y2="652" marker-end="url(#arrow)"/>
+  <text class="mtxt" x="194.5" y="645" text-anchor="middle">Actualiza graficos</text>
+</svg>

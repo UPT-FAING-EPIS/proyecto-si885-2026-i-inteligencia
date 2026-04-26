@@ -1,0 +1,44 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1100" height="720" viewBox="0 0 1100 720">
+
+<style>
+.box { fill: #f8fafc; stroke: #1f2937; stroke-width: 1.4; rx: 8; }
+.box2 { fill: #eef6ff; stroke: #2563eb; stroke-width: 1.4; rx: 8; }
+.box3 { fill: #f0fdf4; stroke: #16a34a; stroke-width: 1.4; rx: 8; }
+.box4 { fill: #fff7ed; stroke: #ea580c; stroke-width: 1.4; rx: 8; }
+.text { font-family: Arial, sans-serif; font-size: 13px; fill: #111827; }
+.title { font-family: Arial, sans-serif; font-size: 18px; font-weight: 700; fill: #111827; }
+.small { font-family: Arial, sans-serif; font-size: 11px; fill: #374151; }
+.line { stroke: #374151; stroke-width: 1.5; marker-end: url(#arrow); fill: none; }
+.dashed { stroke: #6b7280; stroke-width: 1.3; stroke-dasharray: 5 4; marker-end: url(#arrow); fill: none; }
+</style>
+
+<defs><marker id="arrow" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto" markerUnits="strokeWidth"><path d="M0,0 L0,6 L9,3 z" fill="#374151" /></marker></defs>
+<rect x="0" y="0" width="1100" height="720" fill="#ffffff" />
+<text x="24" y="32" class="title">Diagrama de infraestructura obtenido de Terraform</text>
+<rect x="70" y="170" width="210" height="130" class="box2" />
+<text x="82" y="194" class="text">Usuario / Navegador</text>
+<text x="82" y="211" class="small">Angular</text>
+<rect x="330" y="80" width="210" height="130" class="box2" />
+<text x="342" y="104" class="text">CloudFront</text>
+<text x="342" y="121" class="small">aws_cloudfront_distribution</text>
+<rect x="600" y="80" width="210" height="130" class="box4" />
+<text x="612" y="104" class="text">S3 Frontend</text>
+<text x="612" y="121" class="small">aws_s3_bucket</text>
+<rect x="330" y="310" width="210" height="130" class="box3" />
+<text x="342" y="334" class="text">EC2 API</text>
+<text x="342" y="351" class="small">aws_instance t3.micro</text>
+<text x="342" y="368" class="small">FastAPI + Nginx</text>
+<rect x="600" y="330" width="210" height="130" class="box4" />
+<text x="612" y="354" class="text">EBS gp3 20GB</text>
+<text x="612" y="371" class="small">root_block_device</text>
+<rect x="70" y="330" width="210" height="130" class="box" />
+<text x="82" y="354" class="text">Security Group</text>
+<text x="82" y="371" class="small">aws_security_group.api</text>
+<line x1="280" y1="220" x2="330" y2="145" class="line" />
+<line x1="540" y1="145" x2="600" y2="145" class="line" />
+<line x1="280" y1="235" x2="330" y2="375" class="line" />
+<line x1="540" y1="375" x2="600" y2="395" class="line" />
+<line x1="280" y1="395" x2="330" y2="395" class="line" />
+<rect x="70" y="520" width="740" height="80" class="box" />
+<text x="82" y="544" class="text">Fuente: infra/terraform/main.tf, variables.tf y outputs.tf. Costo base validado con Infracost: USD 9.19/mes.</text>
+</svg>

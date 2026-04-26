@@ -1,0 +1,61 @@
+@startuml
+title Diagrama de Casos de Uso - EPIS Analytics
+
+left to right direction
+skinparam shadowing false
+skinparam packageStyle rectangle
+skinparam ArrowColor #334155
+skinparam ArrowThickness 1.8
+skinparam actor {
+  BackgroundColor #ECFEFF
+  BorderColor #0284C7
+  FontColor #0F172A
+}
+skinparam usecase {
+  BackgroundColor #EFF6FF
+  BorderColor #2563EB
+  FontColor #0F172A
+}
+skinparam rectangle {
+  BackgroundColor #F8FAFC
+  BorderColor #CBD5E1
+  FontColor #0F172A
+}
+
+actor "Estudiante EPIS" as Estudiante
+actor "Docente / Responsable\nacadémico" as Docente
+actor "Equipo técnico" as Tecnico
+
+rectangle "EPIS Analytics" {
+  usecase "Iniciar sesión" as UC_Login
+  usecase "Consultar lista\nde estudiantes" as UC_Estudiantes
+  usecase "Consultar dashboard\npersonal" as UC_Perfil
+  usecase "Filtrar perfil\npor red social" as UC_FiltroPerfil
+  usecase "Consultar dashboard\nglobal" as UC_Global
+  usecase "Filtrar global\npor red social" as UC_FiltroGlobal
+  usecase "Visualizar métricas\ncon gráficos" as UC_Graficos
+  usecase "Proteger rutas\nprivadas con token" as UC_Token
+  usecase "Validar infraestructura\ny costos" as UC_Infra
+}
+
+Estudiante --> UC_Login
+Estudiante --> UC_Estudiantes
+Estudiante --> UC_Perfil
+Estudiante --> UC_FiltroPerfil
+Estudiante --> UC_Graficos
+
+Docente --> UC_Login
+Docente --> UC_Global
+Docente --> UC_FiltroGlobal
+Docente --> UC_Graficos
+
+Tecnico --> UC_Infra
+
+UC_Perfil ..> UC_Token : <<include>>
+UC_Global ..> UC_Token : <<include>>
+UC_FiltroPerfil ..> UC_Perfil : <<extend>>
+UC_FiltroGlobal ..> UC_Global : <<extend>>
+UC_Perfil ..> UC_Graficos : <<include>>
+UC_Global ..> UC_Graficos : <<include>>
+UC_Infra ..> UC_Graficos : <<documenta>>
+@enduml
