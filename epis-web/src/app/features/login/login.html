@@ -1,0 +1,36 @@
+<section class="login-page">
+  <div class="login-panel">
+    <div class="login-logo">
+      <img src="/logo-upt.png" alt="Universidad Privada de Tacna" />
+    </div>
+
+    <h1>EPIS Analytics</h1>
+
+    <form (ngSubmit)="submitLogin()" class="login-form">
+      <label for="username">C&oacute;digo universitario</label>
+      <input
+        id="username"
+        name="username"
+        type="text"
+        autocomplete="username"
+        inputmode="numeric"
+        [(ngModel)]="username"
+      />
+
+      <label for="password">Contrase&ntilde;a</label>
+      <input
+        id="password"
+        name="password"
+        type="password"
+        autocomplete="current-password"
+        [(ngModel)]="password"
+      />
+
+      @if (errorMessage) {
+        <p class="error">{{ errorMessage }}</p>
+      }
+
+      <button type="submit" [disabled]="!username || !password">Entrar</button>
+    </form>
+  </div>
+</section>

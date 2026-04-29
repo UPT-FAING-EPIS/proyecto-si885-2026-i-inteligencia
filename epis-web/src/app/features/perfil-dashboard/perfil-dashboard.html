@@ -1,0 +1,99 @@
+<section class="dashboard-page">
+  <header class="page-header">
+    <div>
+      <p class="eyebrow">{{ etiquetaPerfil }}</p>
+      <h1>{{ estudiante }}</h1>
+    </div>
+
+    <label class="filter">
+      <span>Red social</span>
+      <select [ngModel]="redSocial" (ngModelChange)="onRedChange($event)">
+        @for (red of redOptions; track red) {
+          <option [value]="red">{{ red }}</option>
+        }
+      </select>
+    </label>
+  </header>
+
+  @if (errorMessage) {
+    <p class="alert">{{ errorMessage }}</p>
+  }
+
+  @if (contextoRed && !isLoading) {
+    <section class="context-grid">
+      <article>
+        <span>Alcance mide</span>
+        <strong>{{ contextoRed.tipo_alcance }}</strong>
+      </article>
+      <article>
+        <span>Interacciones miden</span>
+        <strong>{{ contextoRed.tipo_interaccion }}</strong>
+      </article>
+    </section>
+  }
+
+  @if (isLoading) {
+    <section class="metrics-grid skeleton-grid">
+      <article class="skeleton-card"></article>
+      <article class="skeleton-card"></article>
+      <article class="skeleton-card"></article>
+    </section>
+  }
+
+  @if (metricas && !isLoading) {
+    <section class="metrics-grid">
+      <article>
+        <span>Publicaciones</span>
+        <strong>{{ metricas.total_publicaciones }}</strong>
+      </article>
+      <article>
+        <span>Interacciones totales</span>
+        <strong>{{ metricas.total_interacciones }}</strong>
+      </article>
+      <article>
+        <span>Red favorita</span>
+        <strong>{{ metricas.red_favorita }}</strong>
+      </article>
+    </section>
+  }
+
+  <section class="content-grid">
+    <article class="panel wide">
+      <h2>Evolución de interacciones</h2>
+      @if (isLoading) {
+        <div class="skeleton-lines">
+          <span></span>
+          <span></span>
+          <span></span>
+          <span></span>
+        </div>
+      } @else if (interaccionesTiempo.length) {
+        <div #timelineChart class="chart chart-line"></div>
+      } @else {
+        <p class="muted">Sin interacciones para esta selección.</p>
+      }
+    </article>
+
+    <article class="panel">
+      <h2>Interacciones por red</h2>
+      @if (isLoading) {
+        <div class="skeleton-lines compact">
+          <span></span>
+          <span></span>
+          <span></span>
+        </div>
+      } @else if (interaccionesPorRed.length) {
+        <div #redChart class="chart chart-bar"></div>
+      } @else {
+        <p class="muted">Sin datos por red.</p>
+      }
+    </article>
+
+    @if (!isLoading && detalleInteracciones.length) {
+      <article class="panel">
+        <h2>Detalle de interacciones</h2>
+        <div #detalleChart class="chart chart-detail"></div>
+      </article>
+    }
+  </section>
+</section>

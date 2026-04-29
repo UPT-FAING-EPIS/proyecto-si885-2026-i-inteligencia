@@ -1,0 +1,42 @@
+# Python cache
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Test and coverage artifacts
+.pytest_cache/
+.coverage
+htmlcov/
+
+# Virtual environments
+.venv/
+venv/
+env/
+
+# Local environment files
+.env
+.env.*
+
+# Streamlit local config/secrets
+.streamlit/secrets.toml
+
+# Generated local data
+epis_data.db
+*.sqlite
+*.sqlite3
+
+# Terraform local artifacts
+**/.terraform/
+**/.infracost/
+*.tfstate
+*.tfstate.*
+crash.log
+crash.*.log
+*.tfvars
+!*.tfvars.example
+
+# Editor and OS files
+.idea/
+.vscode/
+Thumbs.db
+.DS_Store

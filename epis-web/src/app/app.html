@@ -1,0 +1,53 @@
+<div class="app-shell" [class.login-shell]="isLoginRoute">
+  @if (!isLoginRoute) {
+    <aside class="sidebar">
+      <a class="brand" [routerLink]="authService.isAuthenticated() ? '/perfil' : '/login'">
+        <span class="brand-mark">
+          <img src="/logo-upt.png" alt="Universidad Privada de Tacna" />
+        </span>
+        <span>
+          <strong>EPIS Analytics</strong>
+          <small>Universidad Privada de Tacna</small>
+        </span>
+      </a>
+
+      @if (authService.isAuthenticated()) {
+        <section class="sidebar-section">
+          <span class="section-label">Paneles</span>
+          <nav class="nav" aria-label="Paneles principales">
+            <a routerLink="/perfil" routerLinkActive="active">
+              <span class="nav-icon nav-icon-profile" aria-hidden="true"></span>
+              <span>Mi perfil</span>
+            </a>
+            @if (isConsultedProfileRoute) {
+              <span class="nav-item active">
+                <span class="nav-icon nav-icon-consulted" aria-hidden="true"></span>
+                <span>Perfil consultado</span>
+              </span>
+            }
+            <a routerLink="/global" routerLinkActive="active">
+              <span class="nav-icon nav-icon-global" aria-hidden="true"></span>
+              <span>Impacto global</span>
+            </a>
+          </nav>
+        </section>
+
+        <div class="session-panel">
+          <span class="section-label">Sesi&oacute;n activa</span>
+          <div class="session-card">
+            <span class="session-avatar" aria-hidden="true"></span>
+            <span>
+              <strong>{{ authService.getSession()?.displayName }}</strong>
+              <small>{{ authService.getSession()?.username }}</small>
+            </span>
+          </div>
+          <button type="button" (click)="logout()">Salir</button>
+        </div>
+      }
+    </aside>
+  }
+
+  <main class="main">
+    <router-outlet />
+  </main>
+</div>

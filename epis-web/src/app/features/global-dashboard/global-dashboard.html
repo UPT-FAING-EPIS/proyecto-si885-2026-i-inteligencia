@@ -1,0 +1,156 @@
+<section class="dashboard-page">
+  <header class="page-header">
+    <div>
+      <p class="eyebrow">Panorama institucional</p>
+      <h1>Impacto Global EPIS</h1>
+    </div>
+
+    <label class="filter">
+      <span>Red social</span>
+      <select [ngModel]="redSocial" (ngModelChange)="onRedChange($event)">
+        @for (red of redOptions; track red) {
+          <option [value]="red">{{ red }}</option>
+        }
+      </select>
+    </label>
+  </header>
+
+  @if (errorMessage) {
+    <p class="alert">{{ errorMessage }}</p>
+  }
+
+  @if (contextoRed && !isLoading) {
+    <section class="context-grid">
+      <article>
+        <span>Alcance mide</span>
+        <strong>{{ contextoRed.tipo_alcance }}</strong>
+      </article>
+      <article>
+        <span>Interacciones miden</span>
+        <strong>{{ contextoRed.tipo_interaccion }}</strong>
+      </article>
+
+      @if (detalleInteracciones.length) {
+        <article class="panel">
+          <h2>Detalle de interacciones</h2>
+          <div #detalleChart class="chart chart-detail"></div>
+        </article>
+      }
+    </section>
+  }
+
+  <section class="student-search panel">
+    <div>
+      <h2>Buscar estudiante</h2>
+      <p>Abre el perfil de cualquier estudiante para revisar sus métricas individuales.</p>
+    </div>
+
+    <form class="search-form" (ngSubmit)="openPerfil(searchEstudiante)">
+      <label for="student-search">Nombre del estudiante</label>
+      <div class="search-controls">
+        <input
+          id="student-search"
+          name="student-search"
+          type="search"
+          list="student-options"
+          placeholder="Escribe un nombre"
+          [(ngModel)]="searchEstudiante"
+        />
+        <button type="submit">Ver perfil</button>
+      </div>
+      <datalist id="student-options">
+        @for (estudiante of estudiantesFiltrados; track estudiante) {
+          <option [value]="estudiante"></option>
+        }
+      </datalist>
+      @if (searchMessage) {
+        <p class="search-message">{{ searchMessage }}</p>
+      }
+    </form>
+  </section>
+
+  @if (isLoading) {
+    <section class="content-grid skeleton-area">
+      <article class="panel">
+        <div class="skeleton-lines">
+          <span></span>
+          <span></span>
+          <span></span>
+          <span></span>
+        </div>
+      </article>
+      <article class="panel">
+        <div class="skeleton-lines compact">
+          <span></span>
+          <span></span>
+          <span></span>
+        </div>
+      </article>
+    </section>
+  }
+
+  @if (!isLoading) {
+    <section class="content-grid">
+      <article class="panel">
+        <h2>{{ contextoRed?.tipo_alcance || 'Alcance' }} por ciclo</h2>
+        @if (alcancePorCiclo.length) {
+          <div #alcanceChart class="chart chart-bar"></div>
+        } @else {
+          <p class="muted">Sin alcance para esta selección.</p>
+        }
+      </article>
+
+      <article class="panel">
+        <h2>Interacciones por red</h2>
+        @if (interaccionesPorRed.length) {
+          <div #redPieChart class="chart chart-pie"></div>
+        } @else {
+          <p class="muted">Sin interacciones para esta selección.</p>
+        }
+      </article>
+
+      @if (detalleInteracciones.length) {
+        <article class="panel">
+          <h2>Detalle de interacciones</h2>
+          <div #detalleChart class="chart chart-detail"></div>
+        </article>
+      }
+    </section>
+
+    <article class="panel table-panel">
+      <h2>Top 10 estudiantes por nivel de interacción</h2>
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th>Estudiante</th>
+              <th>Publicaciones</th>
+              <th>Alcance</th>
+              <th>Interacciones</th>
+              <th>Porcentaje Interacciones</th>
+            </tr>
+          </thead>
+          <tbody>
+            @for (item of topEngagement; track item.estudiante) {
+              <tr>
+                <td>
+                  <button
+                    type="button"
+                    class="student-link"
+                    (click)="openPerfil(item.estudiante)"
+                  >
+                    {{ item.estudiante }}
+                  </button>
+                </td>
+                <td>{{ item.publicaciones }}</td>
+                <td>{{ item.alcance }}</td>
+                <td>{{ item.interacciones }}</td>
+                <td>{{ item.engagement_rate * 100 | number: '1.2-2' }}%</td>
+              </tr>
+            }
+          </tbody>
+        </table>
+      </div>
+    </article>
+  }
+</section>
